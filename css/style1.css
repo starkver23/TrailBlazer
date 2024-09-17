@@ -1,0 +1,55 @@
+body {
+    background-color: var(--background-color, #f4f4f4);
+    color: var(--text-color, #000);
+    font-family: 'Poppins', sans-serif;
+ }
+
+ .header_section {
+    background-color: var(--header-background, #fff);
+ }
+
+ .header_section .navbar-nav .nav-link {
+    color: var(--header-text, #000);
+ }
+
+ .footer_section {
+    background-color: var(--header-background, #fff);
+    color: var(--text-color, #000);
+ }
+
+ .color-switcher {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--header-background, #fff);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    z-index: 9999;
+ }
+
+ .color-button {
+    display: block;
+    width: 100%;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 5px;
+    text-align: center;
+    cursor: pointer;
+    font-weight: bold;
+    color: #000;
+    transition: background-color 0.3s, color 0.3s, transform 0.2s;
+ }
+
+ .color-button:hover {
+    background: var(--header-background, #000);
+    color: var(--header-text, #fff);
+    transform: scale(1.05);
+ }
+
+ .color-button.active {
+    background: var(--header-background, #000);
+    color: var(--header-text, #fff);
+ }

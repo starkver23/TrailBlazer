@@ -33,9 +33,20 @@
    <link rel="stylesheet" href="css/owl.theme.default.min.css">
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css"
       media="screen">
+   <!-- Custom CSS for Themes -->
+   <link rel="stylesheet" href="css/style1.css">
+
 </head>
 
 <body>
+   <!-- Color switcher -->
+   <div class="color-switcher">
+      <button class="color-button" data-theme="light">Light Theme</button>
+      <button class="color-button" data-theme="dark-green">Dark Green Theme</button>
+      <button class="color-button" data-theme="dark-blue">Dark Blue Theme</button>
+      <button class="color-button" data-theme="black">Black Theme</button>
+   </div>
+
    <!-- header section start -->
    <div class="header_section">
       <div class="header_main">
@@ -346,6 +357,14 @@
    <!-- javascript -->
    <script src="js/owl.carousel.js"></script>
    <script src="https:cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+   <script>
+      document.querySelectorAll('.color-button').forEach(button => {
+         button.addEventListener('click', () => {
+            document.body.className = button.getAttribute('data-theme') + '-theme' + ' active';
+
+         });
+      });
+   </script>
 </body>
 
 </html>
