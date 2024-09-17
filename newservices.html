@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adventure Booking - Activity Chart</title>
+    <style>
+        .country_section {
+            padding: 50px 0;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .chart-container {
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+            margin-top: 20px;
+            /* Space between dropdowns and chart */
+        }
+
+        #activityChart {
+            max-width: 100%;
+        }
+
+        #chartCenterText {
+            font-size: 16px;
+            color: #555;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Country and States Section Start -->
+    <div class="country_section layout_padding">
+        <div class="container">
+
+            <!-- Country Dropdown -->
+            <div class="form-group">
+                <label for="country">Country</label>
+                <select id="country" class="form-control">
+                    <option value="" disabled selected>Select Country</option>
+                    <option value="India">India</option>
+                </select>
+            </div>
+
+            <!-- States Dropdown (Initially hidden until India is selected) -->
+            <div class="form-group" id="states-div" style="display:none;">
+                <label for="state">State</label>
+                <select id="state" class="form-control">
+                    <option value="" disabled selected>Select State</option>
+                </select>
+            </div>
+
+            <!-- Pie Chart Section (Initially hidden) -->
+            <div class="chart-container" id="chart-container" style="display:none;">
+                <h3>Activity Participation Percentage</h3>
+                <canvas id="activityChart"></canvas>
+                <div id="chartCenterText"></div>
+            </div>
+        </div>
+    </div>
+    <!-- Country and States Section End -->
+
+    <!-- Include Chart.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- JavaScript to handle dynamic dropdowns and pie chart -->
+    <script>
+        // List of states in India
+        const statesOfIndia = [
+            "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
+            "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka",
+            "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram",
+            "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu",
+            "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal"
+        ];
+
+        // Sample data for activity participation percentages by state
+        const stateActivityData = {
+            "Andhra Pradesh": [25, 15, 30, 20, 10], // Rafting, Diving, Hiking, Camping, Skydiving
+            "Arunachal Pradesh": [20, 10, 40, 20, 10],
+            "Assam": [30, 20, 25, 15, 10],
+            "Bihar": [10, 15, 35, 25, 15],
+            "Goa": [20, 35, 15, 20, 10],
+            "Kerala": [30, 25, 20, 15, 10],
+            // Add similar data for other states...
+        };
+
+        // Function to create or update the pie chart
+        let activityChart;
+        function createActivityChart(data, labels) {
+            const ctx = document.getElementById('activityChart').getContext('2d');
+            if (activityChart) {
+                activityChart.destroy(); // Destroy the previous chart if it exists
+            }
+
+            activityChart = new Chart(ctx, {
+                type: 'doughnut', // Use doughnut for a unique look
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
+                        borderColor: '#fff',
+                        borderWidth: 2,
+                        hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    cutout: '70%', // Space in the middle for text
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                color: '#333',
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (tooltipItem) {
+                                    return tooltipItem.label + ': ' + tooltipItem.raw + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Display total participants or summary in the center of the chart
+            const totalParticipants = data.reduce((a, b) => a + b, 0);
+            document.getElementById('chartCenterText').textContent = `${totalParticipants}%`;
+        }
+
+        // Country dropdown change event
+        document.getElementById("country").addEventListener("change", function () {
+            const selectedCountry = this.value;
+
+            if (selectedCountry === "India") {
+                // Show the states dropdown
+                document.getElementById("states-div").style.display = "block";
+
+                // Populate the states dropdown
+                const statesDropdown = document.getElementById("state");
+                statesDropdown.innerHTML = `<option value="" disabled selected>Select State</option>`;
+                statesOfIndia.forEach(state => {
+                    let option = document.createElement("option");
+                    option.value = state;
+                    option.textContent = state;
+                    statesDropdown.appendChild(option);
+                });
+            } else {
+                // Hide the states dropdown and chart if another country is selected
+                document.getElementById("states-div").style.display = "none";
+                document.getElementById("chart-container").style.display = "none";
+            }
+        });
+
+        // State dropdown change event
+        document.getElementById("state").addEventListener("change", function () {
+            const selectedState = this.value;
+
+            // Show the chart section
+            if (selectedState) {
+                document.getElementById("chart-container").style.display = "block";
+            } else {
+                document.getElementById("chart-container").style.display = "none";
+            }
+
+            // Get the activity data for the selected state and display the pie chart
+            const activityData = stateActivityData[selectedState];
+            const activityLabels = ['Rafting', 'Diving', 'Hiking', 'Camping', 'Skydiving'];
+
+            if (activityData) {
+                createActivityChart(activityData, activityLabels);
+            } else {
+                console.log("No data available for this state");
+            }
+        });
+    </script>
+
+</body>
+
+</html>

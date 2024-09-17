@@ -1,0 +1,36 @@
+.country_section {
+   padding: 50px 0;
+   text-align: center;
+}
+.container {
+   max-width: 800px;
+   margin: 0 auto;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+}
+.form-group {
+   margin-bottom: 20px;
+   width: 100%;
+   max-width: 400px;
+}
+.form-control {
+   width: 100%;
+   padding: 10px;
+   font-size: 16px;
+   border: 1px solid #ddd;
+   border-radius: 4px;
+}
+.chart-container {
+   text-align: center;
+   width: 100%;
+   max-width: 400px;
+   margin-top: 20px; /* Space between dropdowns and chart */
+}
+#activityChart {
+   max-width: 100%;
+}
+#chartCenterText {
+   font-size: 16px;
+   color: #555;
+}
